@@ -1,7 +1,7 @@
+// Client Service Interface
 package tn.iit.banking.service;
 
 import tn.iit.banking.entities.Client;
-
 import java.util.List;
 
 public interface ClientService {

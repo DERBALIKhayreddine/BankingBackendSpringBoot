@@ -1,23 +1,37 @@
 package tn.iit.banking.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
+
 @Entity
 @Table(name = "Client_table")
 @Data
-
 public class Client {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @Size(min = 2, max = 50)
     private String nom;
+
+    @NotNull
+    @Size(min = 2, max = 50)
     private String prenom;
-    private String rib;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<Account> accounts = new ArrayList<>();
+
+    // No-args constructor for JPA
+    public Client() {}
 
     public Long getId() {
         return id;
@@ -43,23 +57,11 @@ public class Client {
         this.prenom = prenom;
     }
 
-    public String getRib() {
-        return rib;
-    }
-
-    public void setRib(String rib) {
-        this.rib = rib;
-    }
-
-    public List<Account> getAccounts() {
+    public Collection<Account> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(List<Account> accounts) {
+    public void setAccounts(Collection<Account> accounts) {
         this.accounts = accounts;
     }
-
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Account> accounts;
-
 }

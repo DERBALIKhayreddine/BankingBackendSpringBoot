@@ -23,7 +23,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client getClientById(Long id) {
-        return clientRepository.findById(id).orElseThrow(() -> new RuntimeException("Client not found with id " + id));
+        return clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client not found with id " + id));
     }
 
     @Override
@@ -36,7 +37,6 @@ public class ClientServiceImpl implements ClientService {
         Client existingClient = getClientById(id);
         existingClient.setNom(client.getNom());
         existingClient.setPrenom(client.getPrenom());
-        existingClient.setRib(client.getRib());
         return clientRepository.save(existingClient);
     }
 

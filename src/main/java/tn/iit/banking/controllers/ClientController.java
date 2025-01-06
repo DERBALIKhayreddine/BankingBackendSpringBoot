@@ -1,9 +1,11 @@
 package tn.iit.banking.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.iit.banking.entities.Client;
+import tn.iit.banking.entities.ClientRequest;
 import tn.iit.banking.service.ClientService;
 
 import java.util.List;
@@ -12,11 +14,15 @@ import java.util.List;
 @RequestMapping("/clients")
 @CrossOrigin("*")
 public class ClientController {
+
     @Autowired
     private ClientService clientService;
 
     @PostMapping
-    public ResponseEntity<Client> createClient(@RequestBody Client client) {
+    public ResponseEntity<Client> createClient(@Valid @RequestBody ClientRequest clientRequest) {
+        Client client = new Client();
+        client.setNom(clientRequest.getNom());
+        client.setPrenom(clientRequest.getPrenom());
         return ResponseEntity.ok(clientService.createClient(client));
     }
 
